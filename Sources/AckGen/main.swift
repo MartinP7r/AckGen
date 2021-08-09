@@ -8,10 +8,10 @@ struct MyScript {
 //            let license: String
 //        }
 //
-//        guard let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"] else {
-//            print("could not detect the built products directory.")
-//            return
-//        }
+        guard let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"] else {
+            print("could not detect the built products directory.")
+            return
+        }
 //        guard let tempDir = ProcessInfo.processInfo.environment["PROJECT_TEMP_DIR"] else {
 //            print("could not detect the built products directory.")
 //            return
@@ -20,10 +20,10 @@ struct MyScript {
 //        let path = tempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
 //        let fman = FileManager.default
 //
-//        do {
-//            try "Test"
-//                .data(using: .utf8)!
-//                .write(to: URL(fileURLWithPath: "\(srcRoot)/Test.md"))
+        do {
+            try "Test"
+                .data(using: .utf8)!
+                .write(to: URL(fileURLWithPath: "\(srcRoot)/Test.md"))
 //
 //            let items = try fman.contentsOfDirectory(atPath: path)
 //            var array = [Ack]()
@@ -37,15 +37,11 @@ struct MyScript {
 //            encoder.outputFormat = .xml
 //
 //            let plistPath = "\(srcRoot)/Acknowledgements.plist"
-//            do {
 //                let data = try encoder.encode(array)
 //                try data.write(to: URL(fileURLWithPath: plistPath))
-//            } catch {
-//                print(error)
-//            }
-//        } catch {
-//            print(error)
-//        }
+        } catch {
+            print(error)
+        }
 
     }
 }
