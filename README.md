@@ -4,7 +4,8 @@ Simple **Ack**nowledgements **Gen**erator for SPM package license information.
 
 ## Overview
 
-It automatically generates a `plist` file containing the title and license information for all Swift packages used in your project.
+It automatically generates a `plist` file containing the title and license information for all Swift packages used in your project.  
+This can be used to feed a SwiftUI List or UITableView dataSource in your app.
 
 |||
 |---|---|
@@ -29,13 +30,11 @@ fi
 
 If you want the plist file to be saved somewhere other than `Acknowledgements.plist` at the root of your project (`$SRCROOT/Acknowledgements.plist`), you can provide a custom path as the first command line argument to `ackgen` above. 
 
-E.g.:
-
 ```sh
   swift run ackgen $SRCROOT/PackageLicenses.plist
 ```
 
-3. Add the generated file to your project if you haven't already.  
+3. Add the generated `plist` file to your project if you haven't already.  
 Make sure to remove the check for **Copy items if needed** 
 
 ## Beta
