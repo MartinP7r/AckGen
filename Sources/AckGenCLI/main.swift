@@ -1,3 +1,3 @@
 import Foundation
 
-AckGen.main()
+AckGenCLI.main()

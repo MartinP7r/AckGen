@@ -5,14 +5,11 @@
 //  Created by Martin Pfundmair on 2021-08-09.
 //
 
+import AckGen
 import Foundation
 
-struct AckGen {
-
-    struct Acknowledgement: Codable {
-        let title: String
-        let license: String
-    }
+struct AckGenCLI {
+    typealias Acknowledgement = AckGen.Acknowledgement
 
     static func main() {
         print("Generating Acknowledgements file")
@@ -20,11 +17,11 @@ struct AckGen {
         let arguments: [String] = Array(CommandLine.arguments.dropFirst())
 
         guard let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"] else {
-            print("could not detect the built products directory.")
+            print("error: could not detect the source root directory.")
             return
         }
         guard let tempDirPath = ProcessInfo.processInfo.environment["PROJECT_TEMP_DIR"] else {
-            print("could not detect the built products directory.")
+            print("error: could not detect the project's temp directory.")
             return
         }
 

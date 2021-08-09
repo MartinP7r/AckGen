@@ -6,16 +6,25 @@ import PackageDescription
 let package = Package(
     name: "AckGen",
     platforms: [
-        .macOS(.v10_11)
+        .macOS(.v10_15),
+        .iOS(.v13)
     ],
     products: [
-      .executable(name: "ackgen", targets: ["AckGen"])
+        .executable(name: "ackgen", targets: ["AckGenCLI"]),
+        .library(name: "AckGenUI", targets: ["AckGenUI"]),
+        .library(name: "AckGen", targets: ["AckGen"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],
     targets: [
+        .target(
+            name: "AckGenCLI",
+            dependencies: ["AckGen"]),
+        .target(
+            name: "AckGenUI",
+            dependencies: ["AckGen"]),
         .target(
             name: "AckGen",
             dependencies: []),
