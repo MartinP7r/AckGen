@@ -86,3 +86,5 @@ If you encounter any problems or have suggestions, additions or possible improve
 - [x] Add UI components (SwiftUI List with NavigationLink to license info?)
 - [ ] Allow Run Script Output Files as alternative to command line argument
 - [ ] Allow to specify excluded packages
+- [ ] Add tests
+- [ ] Add other platforms
