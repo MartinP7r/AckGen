@@ -9,7 +9,7 @@ This can be used to feed a SwiftUI List or UITableView dataSource in your app.
 
 |||
 |---|---|
-| ![](docs/demo.gif) | ![](docs/sample_plist.png) |
+| ![](docs/sample_plist.png) | ![](docs/ui_sample.gif)|
 
 ## Requirements
 
@@ -52,9 +52,7 @@ acknowledgements.forEach { print($0.title, $0.license) }
 
 ## UI
 
-Optionally, there's a basic SwiftUI `AcknowledgementsList` component included in the `AckGenUI` module that you can use to quickly create a generic list of acknowledgements to embed into a `NavigationView`.
-
-![](docs/ui_sample.gif)
+Optionally, there's a basic SwiftUI `AcknowledgementsList` component (see gif above) included in the `AckGenUI` module that you can use to quickly create a generic list of acknowledgements to embed into a `NavigationView`.
 
 ```swift
 import AckGenUI
