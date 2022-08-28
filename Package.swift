@@ -7,7 +7,8 @@ let package = Package(
     name: "AckGen",
     platforms: [
         .macOS(.v10_15),
-        .iOS(.v13)
+        .iOS(.v13),
+        .watchOS(.v6)
     ],
     products: [
         .executable(name: "ackgen", targets: ["AckGenCLI"]),
