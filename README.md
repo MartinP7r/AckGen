@@ -7,9 +7,9 @@ Simple **Ack**nowledgements **Gen**erator for SPM package license information.
 AckGen automatically generates a `plist` file containing the title and license information for all Swift packages used in your project.  
 This can be used to feed a SwiftUI List or UITableView dataSource in your app.
 
-|||
-|---|---|
-| ![](docs/sample_plist.png) | ![](docs/ui_sample.gif)|
+|                            |                         |
+| -------------------------- | ----------------------- |
+| ![](docs/sample_plist.png) | ![](docs/ui_sample.gif) |
 
 ## Requirements
 
@@ -18,6 +18,9 @@ This can be used to feed a SwiftUI List or UITableView dataSource in your app.
 ## Installation
 
 1. Add AckGen as a dependency for your project in Xcode.  
+
+> **Warning**
+> Leave the checkbox for executable unchecked
 
 2. Add the following as a Run Script for your target in Xcode
 
