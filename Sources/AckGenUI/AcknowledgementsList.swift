@@ -12,20 +12,40 @@ public struct AcknowledgementsList: View {
     typealias Acknowledgement = AckGen.Acknowledgement
 
     private let plistName: String
+    private let title: String
 
-    public init(plistName: String = "Acknowledgements") {
+    public init(
+        plistName: String = "Acknowledgements",
+        title: String = "Acknowledgements"
+    ) {
         self.plistName = plistName
+        self.title = title
     }
 
     @State private var acknowledgements: [Acknowledgement] = []
 
     public var body: some View {
         List(acknowledgements, id: \.title) { ack in
-            NavigationLink(destination: ScrollView { Text(ack.license).padding() },
-                           label: { Text(ack.title) })
+            NavigationLink(destination: AcknowledgementDetailsView(acknowledgement: ack)) {
+                Text(ack.title)
+            }
         }
-        .onAppear {
-            self.acknowledgements = Acknowledgement.all()
+            .navigationTitle(title)
+            .onAppear {
+                self.acknowledgements = Acknowledgement.all()
+            }
+    }
+}
+
+public struct AcknowledgementDetailsView: View {
+
+    let acknowledgement: Acknowledgement
+
+    public var body: some View {
+        ScrollView {
+            Text(acknowledgement.license)
+                .padding()
         }
+            .navigationTitle(acknowledgement.title)
     }
 }
