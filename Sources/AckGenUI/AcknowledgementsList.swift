@@ -11,14 +11,9 @@ import SwiftUI
 public struct AcknowledgementsList: View {
     typealias Acknowledgement = AckGen.Acknowledgement
 
-    private let plistName: String
     private let title: String
 
-    public init(
-        plistName: String = "Acknowledgements",
-        title: String = "Acknowledgements"
-    ) {
-        self.plistName = plistName
+    public init(title: String = "Acknowledgements") {
         self.title = title
     }
 
@@ -30,7 +25,7 @@ public struct AcknowledgementsList: View {
                 Text(ack.title)
             }
         }
-            .navigationTitle(title)
+            .customNavigationTitle(title)
             .onAppear {
                 self.acknowledgements = Acknowledgement.all()
             }
@@ -46,6 +41,6 @@ public struct AcknowledgementDetailsView: View {
             Text(acknowledgement.license)
                 .padding()
         }
-            .navigationTitle(acknowledgement.title)
+            .customNavigationTitle(acknowledgement.title)
     }
 }
