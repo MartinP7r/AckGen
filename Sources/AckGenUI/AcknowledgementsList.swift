@@ -12,9 +12,11 @@ public struct AcknowledgementsList: View {
     typealias Acknowledgement = AckGen.Acknowledgement
 
     private let title: String
+    private let plistName: String
 
-    public init(title: String = "Acknowledgements") {
+    public init(title: String = "Acknowledgements", plistName: String = "Acknowledgements") {
         self.title = title
+        self.plistName = plistName
     }
 
     @State private var acknowledgements: [Acknowledgement] = []
@@ -25,10 +27,10 @@ public struct AcknowledgementsList: View {
                 Text(ack.title)
             }
         }
-            .customNavigationTitle(title)
-            .onAppear {
-                self.acknowledgements = Acknowledgement.all()
-            }
+        .customNavigationTitle(title)
+        .onAppear {
+            self.acknowledgements = Acknowledgement.all(fromPlist: plistName)
+        }
     }
 }
 
@@ -41,6 +43,6 @@ public struct AcknowledgementDetailsView: View {
             Text(acknowledgement.license)
                 .padding()
         }
-            .customNavigationTitle(acknowledgement.title)
+        .customNavigationTitle(acknowledgement.title)
     }
 }

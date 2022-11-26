@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		303E68903E322198384A710E /* AckGenExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E4FDCA2A2284F95B69DAF9 /* AckGenExampleApp.swift */; };
+		6B0A529ADF3F1D8A34C779F0 /* PackageLicenses.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1AC2BC21BD1C67E1522B7 /* PackageLicenses.plist */; };
 		914F2715C042B0AE0693A256 /* ackgen in Frameworks */ = {isa = PBXBuildFile; productRef = B96CFB2C87004819524D43AF /* ackgen */; };
 		B912CBB63BC3DD1EC7121E2C /* AckGenUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7F7D6315D96EFFF307483816 /* AckGenUI */; };
 		CD536E30959549D8C45EF5FF /* AckGen in Frameworks */ = {isa = PBXBuildFile; productRef = 705E84EFAD7EFDE966E156BB /* AckGen */; };
@@ -15,6 +16,7 @@
 
 /* Begin PBXFileReference section */
 		331021FD5077D8DD4FFA3593 /* AckGen */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AckGen; path = ..; sourceTree = SOURCE_ROOT; };
+		3CE1AC2BC21BD1C67E1522B7 /* PackageLicenses.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = PackageLicenses.plist; sourceTree = "<group>"; };
 		ACD3D8398D0CDDBDD4B2AF86 /* AckGenExample.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AckGenExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6E4FDCA2A2284F95B69DAF9 /* AckGenExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AckGenExampleApp.swift; sourceTree = "<group>"; };
 		D8B642EC1CACDD1FDE1CBE93 /* project.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = project.yml; sourceTree = "<group>"; };
@@ -37,6 +39,7 @@
 		243485F5ED3C2CFEDE8F26FC = {
 			isa = PBXGroup;
 			children = (
+				3CE1AC2BC21BD1C67E1522B7 /* PackageLicenses.plist */,
 				D8B642EC1CACDD1FDE1CBE93 /* project.yml */,
 				95134EBCB0E7953FD3C484F3 /* Packages */,
 				E8E137FFF1C540B756FE50EC /* Sources */,
@@ -77,6 +80,7 @@
 			buildPhases = (
 				B89993947A422A8A30DC17F7 /* AckGen */,
 				C5EB269C59EDD772FBA8F063 /* Sources */,
+				870EF48CE67F83BADAAF29E8 /* Resources */,
 				F273DB31527630C99B8301FA /* Frameworks */,
 			);
 			buildRules = (
@@ -122,6 +126,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		870EF48CE67F83BADAAF29E8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6B0A529ADF3F1D8A34C779F0 /* PackageLicenses.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		B89993947A422A8A30DC17F7 /* AckGen */ = {
