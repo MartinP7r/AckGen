@@ -14,7 +14,7 @@ struct AckGenExampleApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                AcknowledgementsList()
+                AcknowledgementsList(plistName: "PackageLicenses")
             }
         }
     }

@@ -18,7 +18,9 @@ fileGroups:
 
 targets:
   AckGenExample:
-    sources: Sources
+    sources:
+      - Sources
+      - path: PackageLicenses.plist
     type: application
     platform: iOS
     deploymentTarget: "16.0"
