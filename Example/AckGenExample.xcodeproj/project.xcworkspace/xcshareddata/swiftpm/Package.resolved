@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "DataCompression",
+        "repositoryURL": "https://github.com/mw99/DataCompression",
+        "state": {
+          "branch": null,
+          "revision": "5ab15951321b08b74511601cbd0497667649d70b",
+          "version": "3.8.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
