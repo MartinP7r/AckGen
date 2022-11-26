@@ -28,7 +28,7 @@ This can be used to feed a SwiftUI List or UITableView dataSource in your app.
 DIR=$PROJECT_TEMP_DIR/../../../SourcePackages/checkouts/AckGen
 if [ -d "$DIR" ]; then
   cd $DIR
-  SDKROOT=macosx
+  SDKROOT=(xcrun --sdk macosx --show-sdk-path)
   swift run ackgen
 else
   echo "warning: AckGen not found. Please install the package via SPM (https://github.com/MartinP7r/AckGen#installation)"
