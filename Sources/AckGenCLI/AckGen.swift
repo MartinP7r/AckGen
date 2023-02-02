@@ -27,7 +27,7 @@ struct AckGenCLI {
 
         let plistPath: String = arguments.first ?? "\(srcRoot)/Acknowledgements.plist"
 
-        let forSettings: String = arguments.count > 1 ? true : false
+        let forSettings: Bool = arguments.count > 1 ? true : false
 
         let settingsTitle: String = arguments.count > 2 ? arguments[2] : "Acknowledgements"
 
