@@ -5,6 +5,7 @@
 //  Created by Martin Pfundmair on 2021-08-09.
 //
 
+import AckGen
 import Foundation
 
 public struct AcknowledgementsStringsTable: Codable {
