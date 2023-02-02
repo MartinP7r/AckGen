@@ -49,7 +49,7 @@ struct AckGenCLI {
             encoder.outputFormat = .xml
 
             if forSettings {
-                let acknowledgementsSettings = AcknowledgementsStringsTable(settingsTitle, acknowledgements)
+                let acknowledgementsSettings = AcknowledgementsStringsTable(name: settingsTitle, acknowledgements: acknowledgements)
                 let data = try encoder.encode(acknowledgementsSettings)
                 try data.write(to: URL(fileURLWithPath: plistPath))
             } else {

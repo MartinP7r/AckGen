@@ -29,7 +29,7 @@ public struct AcknowledgementsStringsTable: Codable {
     public static func all(fromPlist plistName: String = "Acknowledgements") -> [Acknowledgement] {
         guard let path = Bundle.main.path(forResource: plistName, ofType: "plist"),
               let xml = FileManager.default.contents(atPath: path),
-              let acks = try? PropertyListDecoder().decode([AcknowledgementsStringsTable].self, from: xml) else { return [] }
+              let acks = try? PropertyListDecoder().decode(AcknowledgementsStringsTable.self, from: xml) else { return [] }
         return acks.acknowledgements.sorted(by: { $0.title.lowercased() < $1.title.lowercased() })
     }
 }

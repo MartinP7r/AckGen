@@ -11,6 +11,13 @@ public struct Acknowledgement: Codable {
     
     public let title: String
     public let license: String
+    public let type: String = "PSGroupSpecifier"
+
+    enum CodingKeys: String, CodingKey {
+        case title = "Title"
+        case license = "FooterText"
+        case type = "Type"
+    }
 
     public init(title: String, license: String) {
         self.title = title
