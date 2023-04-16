@@ -28,3 +28,9 @@ public struct Acknowledgement: Codable {
         return acks.sorted(by: { $0.title.lowercased() < $1.title.lowercased() })
     }
 }
+
+extension Acknowledgement: Comparable {
+    public static func < (lhs: Acknowledgement, rhs: Acknowledgement) -> Bool {
+        lhs.title < rhs.title
+    }
+}

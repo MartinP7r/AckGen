@@ -13,10 +13,16 @@ public struct AcknowledgementsList: View {
 
     private let title: String
     private let plistName: String
+    private let otherAcknowledgements: [Acknowledgement]
 
-    public init(title: String = "Acknowledgements", plistName: String = "Acknowledgements") {
+    public init(
+        title: String = "Acknowledgements",
+        plistName: String = "Acknowledgements",
+        otherAcknowledgements: [AckGen.Acknowledgement] = []
+    ) {
         self.title = title
         self.plistName = plistName
+        self.otherAcknowledgements = otherAcknowledgements
     }
 
     @State private var acknowledgements: [Acknowledgement] = []
@@ -29,7 +35,7 @@ public struct AcknowledgementsList: View {
         }
         .customNavigationTitle(title)
         .onAppear {
-            self.acknowledgements = Acknowledgement.all(fromPlist: plistName)
+            self.acknowledgements = (Acknowledgement.all(fromPlist: plistName) + otherAcknowledgements).sorted()
         }
     }
 }
