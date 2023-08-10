@@ -36,7 +36,8 @@ struct AckGenCLI {
             var acknowledgements = [Acknowledgement]()
 
             for pkgDir in packageDirectories where pkgDir.prefix(1) != "." {
-                guard let data = fman.contents(atPath: "\(packageCachePath)/\(pkgDir)/LICENSE") else { continue }
+                guard let license = try fman.contentsOfDirectory(atPath: "\(packageCachePath)/\(pkgDir)/").first(where: {$0.starts(with: "LICENSE")}),
+                        let data = fman.contents(atPath: "\(packageCachePath)/\(pkgDir)/\(license)") else { continue }
                 let new = Acknowledgement(title: pkgDir, license: String(data: data, encoding: .utf8)!)
                 acknowledgements.append(new)
             }
