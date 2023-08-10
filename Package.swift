@@ -13,7 +13,6 @@ let package = Package(
     ],
     products: [
         .executable(name: "ackgen", targets: ["AckGenCLI"]),
-        .library(name: "AckGenUI", targets: ["AckGenUI"]),
         .library(name: "AckGen", targets: ["AckGen"])
     ],
     dependencies: [
@@ -23,9 +22,6 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "AckGenCLI",
-            dependencies: ["AckGen"]),
-        .target(
-            name: "AckGenUI",
             dependencies: ["AckGen"]),
         .target(
             name: "AckGen",
