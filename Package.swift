@@ -13,7 +13,8 @@ let package = Package(
     ],
     products: [
         .executable(name: "ackgen", targets: ["AckGenCLI"]),
-        .library(name: "AckGen", targets: ["AckGen"])
+        .library(name: "AckGen", targets: ["AckGen"]),
+        .plugin(name: "AckGenPlugin", targets: ["AckGenPlugin"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -22,12 +23,20 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "AckGenCLI",
-            dependencies: ["AckGen"]),
+            dependencies: ["AckGen"],
+            plugins: ["AckGenPlugin"]),
         .target(
             name: "AckGen",
             dependencies: []),
         .testTarget(
             name: "AckGenTests",
             dependencies: ["AckGen"]),
+        .plugin(
+            name: "AckGenPlugin",
+            capability: .buildTool(),
+            dependencies: ["AckGenCLIBinary"]),
+        .binaryTarget(
+            name: "AckGenCLIBinary",
+            path: "Binaries/AckGenCLIBinary.artifactbundle"),
     ]
 )
