@@ -16,11 +16,11 @@ struct AckGenCLI {
 
         let arguments: [String] = Array(CommandLine.arguments.dropFirst())
 
-        guard let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"] else {
+        guard let srcRoot = ProcessInfo.processInfo.environment[EnvironmentKey.srcRoot] else {
             print("error: could not detect the source root directory.")
             return
         }
-        guard let tempDirPath = ProcessInfo.processInfo.environment["PROJECT_TEMP_DIR"] else {
+        guard let tempDirPath = ProcessInfo.processInfo.environment[EnvironmentKey.xcodeproj] else {
             print("error: could not detect the project's temp directory.")
             return
         }
@@ -36,8 +36,13 @@ struct AckGenCLI {
             var acknowledgements = [Acknowledgement]()
 
             for pkgDir in packageDirectories where pkgDir.prefix(1) != "." {
-                guard let license = try fman.contentsOfDirectory(atPath: "\(packageCachePath)/\(pkgDir)/").first(where: {$0.starts(with: "LICENSE")}),
-                        let data = fman.contents(atPath: "\(packageCachePath)/\(pkgDir)/\(license)") else { continue }
+                guard let license = try fman
+                    .contentsOfDirectory(atPath: "\(packageCachePath)/\(pkgDir)/")
+                    .first(where: { $0.starts(with: "LICENSE") }),
+                      let data = fman
+                    .contents(atPath: "\(packageCachePath)/\(pkgDir)/\(license)")
+                else { continue }
+                
                 let new = Acknowledgement(title: pkgDir, license: String(data: data, encoding: .utf8)!)
                 acknowledgements.append(new)
             }
