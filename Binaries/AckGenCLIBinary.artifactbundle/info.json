@@ -1,0 +1,15 @@
+{
+    "schemaVersion": "1.0",
+    "artifacts": {
+        "AckGenCLIBinary": {
+            "version": "1.0.0",
+            "type": "executable",
+            "variants": [
+                {
+                    "path": "AckGenCLIBinary-1.0.0-macos/bin/AckGenCLIBinary",
+                    "supportedTriples": ["x86_64-apple-macosx", "arm64-apple-macosx"]
+                }
+            ]
+        }
+    }
+}
