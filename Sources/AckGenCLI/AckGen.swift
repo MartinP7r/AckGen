@@ -36,9 +36,14 @@ struct AckGenCLI {
             var acknowledgements = [Acknowledgement]()
 
             for pkgDir in packageDirectories where pkgDir.prefix(1) != "." {
-                guard let data = fman.contents(atPath: "\(packageCachePath)/\(pkgDir)/LICENSE") else { continue }
-                let new = Acknowledgement(title: pkgDir, license: String(data: data, encoding: .utf8)!)
-                acknowledgements.append(new)
+                let pkgDirContents = try fman.contentsOfDirectory(atPath: "\(packageCachePath)/\(pkgDir)")
+                for pkgContent in pkgDirContents {
+                    if pkgContent.contains("LICENSE") {
+                        guard let data = fman.contents(atPath: "\(packageCachePath)/\(pkgDir)/\(pkgContent)") else { continue }
+                        let new = Acknowledgement(title: pkgDir, license: String(data: data, encoding: .utf8)!)
+                        acknowledgements.append(new)
+                    }
+                }
             }
 
             let encoder = PropertyListEncoder()
