@@ -37,7 +37,7 @@ let package = Package(
             dependencies: ["AckGen"]),
         .plugin(
             name: "AckGenPlugin",
-            capability: .buildTool(),
+            capability: .command(intent: .documentationGeneration, permissions: [.writeToPackageDirectory(reason: "Generate Licence Documentation")]),
             dependencies: ["AckGenCLIBinary"]),
         .binaryTarget(
             name: "AckGenCLIBinary",
