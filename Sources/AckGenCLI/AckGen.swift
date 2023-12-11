@@ -14,6 +14,8 @@ struct AckGenCLI {
     static func main() {
         print("Generating Acknowledgements file")
 
+        let licenseFiles: [String] = ["LICENSE", "LICENSE.txt"]
+        
         let arguments: [String] = Array(CommandLine.arguments.dropFirst())
 
         guard let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"] else {
@@ -36,9 +38,11 @@ struct AckGenCLI {
             var acknowledgements = [Acknowledgement]()
 
             for pkgDir in packageDirectories where pkgDir.prefix(1) != "." {
-                guard let data = fman.contents(atPath: "\(packageCachePath)/\(pkgDir)/LICENSE") else { continue }
-                let new = Acknowledgement(title: pkgDir, license: String(data: data, encoding: .utf8)!)
-                acknowledgements.append(new)
+                for file in licenseFiles {
+                    guard let data = fman.contents(atPath: "\(packageCachePath)/\(pkgDir)/\(file)")  else { continue }
+                    let new = Acknowledgement(title: pkgDir, license: String(data: data, encoding: .utf8)!)
+                    acknowledgements.append(new)
+                }
             }
 
             let encoder = PropertyListEncoder()
