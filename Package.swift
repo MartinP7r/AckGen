@@ -26,7 +26,9 @@ let package = Package(
             dependencies: ["AckGen"]),
         .target(
             name: "AckGenUI",
-            dependencies: ["AckGen"]),
+            dependencies: ["AckGen"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
+        ),
         .target(
             name: "AckGen",
             dependencies: [],
