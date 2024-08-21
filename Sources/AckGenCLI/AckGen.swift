@@ -14,7 +14,7 @@ struct AckGenCLI {
     static func main() {
         print("Generating Acknowledgements file")
 
-        let licenseFiles: [String] = ["LICENSE", "LICENSE.txt"]
+        let licenseFiles: [String] = ["LICENSE", "LICENSE.txt", "LICENSE.md"]
         
         let arguments: [String] = Array(CommandLine.arguments.dropFirst())
 
