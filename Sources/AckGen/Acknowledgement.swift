@@ -19,8 +19,8 @@ public struct Acknowledgement: Codable {
 
     /// Fetch all the acknowledgements from the acknowledgement property list's file.
     /// - Parameters:
-    ///   - plistName: the property list's filename without extension. Default to `Acknowledgements`.
-    ///   - bundle: the bundle where the plist file is located. Default to the main bundle.
+    ///   - plistName: the property list's filename without extension. Defaults to `Acknowledgements`.
+    ///   - bundle: the bundle where the plist file is located. Defaults to the main bundle.
     /// - Returns: Array of objects containing title and licence.
     public static func all(
         fromPlist plistName: String = "Acknowledgements",
