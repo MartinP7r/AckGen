@@ -35,6 +35,8 @@ else
 fi
 ```
 
+Make sure to set `ENABLE_USER_SCRIPT_SANDBOXING` to `NO` in your build settings so the build phase above can write to the desired destination.
+
 If you want the plist file to be saved somewhere other than `Acknowledgements.plist` at the root of your project (`$SRCROOT/Acknowledgements.plist`), you can provide a custom path as the first command line argument to `ackgen` above. 
 
 ```sh
