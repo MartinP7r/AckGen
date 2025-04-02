@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -53,7 +53,7 @@
 				331021FD5077D8DD4FFA3593 /* AckGen */,
 			);
 			name = Packages;
-			sourceTree = SOURCE_ROOT;
+			sourceTree = "<group>";
 		};
 		BE3F110140E2C158893568AB /* Products */ = {
 			isa = PBXGroup;
@@ -103,12 +103,13 @@
 		20B582E87CBDEF979E095A36 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1200;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 				};
 			};
 			buildConfigurationList = 734604B77852C2A80D8DA8AE /* Build configuration list for PBXProject "AckGenExample" */;
-			compatibilityVersion = "Xcode 11.0";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
