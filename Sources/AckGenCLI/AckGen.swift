@@ -5,11 +5,10 @@
 //  Created by Martin Pfundmair on 2021-08-09.
 //
 
-import AckGen
+import AckGenCore
 import Foundation
 
 struct AckGenCLI {
-    typealias Acknowledgement = AckGen.Acknowledgement
 
     static func main() {
         print("Generating Acknowledgements file")
