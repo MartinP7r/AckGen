@@ -5,11 +5,11 @@
 //  Created by Martin Pfundmair on 2021-08-09.
 //
 
-import AckGen
+import AckGenCore
 import SwiftUI
 
 public struct AcknowledgementsList: View {
-    typealias Acknowledgement = AckGen.Acknowledgement
+    typealias Acknowledgement = AckGenCore.Acknowledgement
 
     private let title: String
     private let plistName: String
@@ -20,7 +20,7 @@ public struct AcknowledgementsList: View {
         title: String = "Acknowledgements",
         plistName: String = "Acknowledgements",
         bundle: Bundle = .main,
-        otherAcknowledgements: [AckGen.Acknowledgement] = []
+        otherAcknowledgements: [AckGenCore.Acknowledgement] = []
     ) {
         self.title = title
         self.plistName = plistName

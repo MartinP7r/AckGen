@@ -14,7 +14,6 @@ let package = Package(
     products: [
         .executable(name: "ackgen", targets: ["AckGenCLI"]),
         .library(name: "AckGenUI", targets: ["AckGenUI"]),
-        .library(name: "AckGen", targets: ["AckGen"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -23,19 +22,19 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "AckGenCLI",
-            dependencies: ["AckGen"]),
+            dependencies: ["AckGenCore"]),
         .target(
             name: "AckGenUI",
-            dependencies: ["AckGen"],
+            dependencies: ["AckGenCore"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
-            name: "AckGen",
+            name: "AckGenCore",
             dependencies: [],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .testTarget(
             name: "AckGenTests",
-            dependencies: ["AckGen"]),
+            dependencies: ["AckGenCore"]),
     ]
 )

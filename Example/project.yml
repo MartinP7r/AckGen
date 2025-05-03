@@ -46,5 +46,3 @@ targets:
         product: AckGenUI
       - package: AckGen
         product: ackgen
-      - package: AckGen
-        product: AckGen

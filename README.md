@@ -83,6 +83,13 @@ I hope, however, that it can be useful to someone other than me.
 
 If you encounter any problems or have suggestions, additions or possible improvements to share, you are more than welcome to open a PR or issue and I'll get back to you as soon as my time allows it.
 
+### Setup Example App
+
+```sh
+make bootstrap
+make open
+```
+
 ## TODO
 
 - [ ] Add non-SPM licenses separately
