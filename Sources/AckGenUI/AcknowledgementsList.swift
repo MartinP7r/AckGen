@@ -9,8 +9,6 @@ import AckGenCore
 import SwiftUI
 
 public struct AcknowledgementsList: View {
-    typealias Acknowledgement = AckGenCore.Acknowledgement
-
     private let title: String
     private let plistName: String
     private let bundle: Bundle

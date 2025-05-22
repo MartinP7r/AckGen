@@ -28,6 +28,10 @@ struct AckGenCLI {
 
         let plistPath: String = arguments.first ?? "\(srcRoot)/Acknowledgements.plist"
 
+        let forSettings: Bool = arguments.count > 1
+
+        let settingsTitle: String = arguments.count > 2 ? arguments[2] : "Acknowledgements"
+
         let packageCachePath = tempDirPath.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
         let fman = FileManager.default
 
@@ -47,8 +51,14 @@ struct AckGenCLI {
             let encoder = PropertyListEncoder()
             encoder.outputFormat = .xml
 
-            let data = try encoder.encode(acknowledgements)
-            try data.write(to: URL(fileURLWithPath: plistPath))
+            if forSettings {
+                let acknowledgementsSettings = AcknowledgementsStringsTable(name: settingsTitle, acknowledgements: acknowledgements)
+                let data = try encoder.encode(acknowledgementsSettings)
+                try data.write(to: URL(fileURLWithPath: plistPath))
+            } else {
+                let data = try encoder.encode(acknowledgements)
+                try data.write(to: URL(fileURLWithPath: plistPath))
+            }
         } catch {
             print(error)
         }
