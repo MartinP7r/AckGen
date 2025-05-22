@@ -22,9 +22,9 @@ public struct AcknowledgementsStringsTable: Codable {
         self.acknowledgements = acknowledgements
     }
 
-    /// <#Description#>
-    /// - Parameter plistName: the property list's filename without extension
-    /// - Returns: Array of objects containing title and
+    /// Loads acknowledgements from a property list file, decodes them, and returns a sorted array of acknowledgements.
+    /// - Parameter plistName: The name of the property list file (without the `.plist` extension) to load acknowledgements from.
+    /// - Returns: An array of `Acknowledgement` objects sorted alphabetically by their title. Returns an empty array if the file cannot be loaded or decoded.
     public static func all(fromPlist plistName: String = "Acknowledgements") -> [Acknowledgement] {
         guard let path = Bundle.main.path(forResource: plistName, ofType: "plist"),
               let xml = FileManager.default.contents(atPath: path),
