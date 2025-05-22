@@ -21,12 +21,15 @@ targets:
     sources:
       - Sources
       - path: PackageLicenses.plist
+      - path: Settings.bundle
     type: application
     platform: iOS
     deploymentTarget: "16.0"
     preBuildScripts:
       - path: ackgen.sh
         name: "AckGen"
+      - path: ackgen_settings.sh
+        name: "AckGen Settings Bundle"
     settings:
       base:
         GENERATE_INFOPLIST_FILE: true

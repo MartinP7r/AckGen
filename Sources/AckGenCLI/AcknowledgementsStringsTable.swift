@@ -5,7 +5,7 @@
 //  Created by Martin Pfundmair on 2021-08-09.
 //
 
-import AckGen
+import AckGenCore
 import Foundation
 
 public struct AcknowledgementsStringsTable: Codable {
@@ -21,7 +21,6 @@ public struct AcknowledgementsStringsTable: Codable {
         self.name = name
         self.acknowledgements = acknowledgements
     }
-
 
     /// <#Description#>
     /// - Parameter plistName: the property list's filename without extension
