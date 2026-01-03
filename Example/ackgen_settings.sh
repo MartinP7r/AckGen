@@ -8,7 +8,7 @@ if [ -d "$DIR" ]; then
     if [ -d "$SETTINGS_BUNDLE" ]; then
         PLIST_PATH="$SETTINGS_BUNDLE/Acknowledgements.plist"
         PROJECT_NAME=$(basename "$SRCROOT")
-        swift run ackgen "$PLIST_PATH" 1 "$PROJECT_NAME"
+        swift run ackgen --output "$PLIST_PATH" --settings --title "$PROJECT_NAME"
     else
         echo "warning: Settings.bundle not found in the project."
     fi

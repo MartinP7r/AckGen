@@ -16,13 +16,15 @@ let package = Package(
         .library(name: "AckGenUI", targets: ["AckGenUI"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.3.0"),
     ],
     targets: [
         .executableTarget(
             name: "AckGenCLI",
-            dependencies: ["AckGenCore"]),
+            dependencies: [
+                "AckGenCore",
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
+            ]),
         .target(
             name: "AckGenUI",
             dependencies: ["AckGenCore"],
