@@ -57,6 +57,13 @@ struct AckGen: ParsableCommand {
             }
         }
 
+        if acknowledgements.isEmpty {
+            throw ValidationError(
+                "No license files found in \(packageCachePath). " +
+                "Ensure SPM packages are resolved (Xcode → File → Packages → Resolve)."
+            )
+        }
+
         let encoder = PropertyListEncoder()
         encoder.outputFormat = .xml
 
