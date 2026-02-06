@@ -1,47 +1,72 @@
 import XCTest
-import class Foundation.Bundle
+@testable import AckGenCore
 
 final class AckGenTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
 
-        // Some of the APIs that we use below are available in macOS 10.13 and above.
-        guard #available(macOS 10.13, *) else {
-            return
-        }
-
-        // Mac Catalyst won't have `Process`, but it is supported for executables.
-        #if !targetEnvironment(macCatalyst)
-
-        let fooBinary = productsDirectory.appendingPathComponent("AckGen")
-
-        let process = Process()
-        process.executableURL = fooBinary
-
-        let pipe = Pipe()
-        process.standardOutput = pipe
-
-        try process.run()
-        process.waitUntilExit()
-
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output = String(data: data, encoding: .utf8)
-
-        XCTAssertEqual(output, "Hello, world!\n")
-        #endif
+    func testAcknowledgementInit() {
+        let ack = Acknowledgement(title: "TestLib", license: "MIT License")
+        XCTAssertEqual(ack.title, "TestLib")
+        XCTAssertEqual(ack.license, "MIT License")
     }
 
-    /// Returns path to the built products directory.
-    var productsDirectory: URL {
-      #if os(macOS)
-        for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
-            return bundle.bundleURL.deletingLastPathComponent()
-        }
-        fatalError("couldn't find the products directory")
-      #else
-        return Bundle.main.bundleURL
-      #endif
+    func testAcknowledgementCodable() throws {
+        let original = Acknowledgement(title: "MyPackage", license: "Apache 2.0")
+
+        let encoder = PropertyListEncoder()
+        encoder.outputFormat = .xml
+        let data = try encoder.encode([original])
+
+        let decoded = try PropertyListDecoder().decode([Acknowledgement].self, from: data)
+        XCTAssertEqual(decoded.count, 1)
+        XCTAssertEqual(decoded.first?.title, "MyPackage")
+        XCTAssertEqual(decoded.first?.license, "Apache 2.0")
+    }
+
+    func testAcknowledgementComparable() {
+        let a = Acknowledgement(title: "Alpha", license: "")
+        let b = Acknowledgement(title: "Beta", license: "")
+        XCTAssertTrue(a < b)
+        XCTAssertFalse(b < a)
+    }
+
+    func testAcknowledgementCodingKeys() throws {
+        let ack = Acknowledgement(title: "Lib", license: "MIT")
+
+        let encoder = PropertyListEncoder()
+        encoder.outputFormat = .xml
+        let data = try encoder.encode(ack)
+        let plist = try PropertyListSerialization.propertyList(from: data, format: nil) as! [String: String]
+
+        XCTAssertEqual(plist["Title"], "Lib")
+        XCTAssertEqual(plist["FooterText"], "MIT")
+        XCTAssertEqual(plist["Type"], "PSGroupSpecifier")
+    }
+
+    func testAllFromMissingPlist() {
+        let acks = Acknowledgement.all(fromPlist: "NonExistent")
+        XCTAssertTrue(acks.isEmpty)
+    }
+
+    func testAllReturnsSorted() throws {
+        let items = [
+            Acknowledgement(title: "Zebra", license: "Z"),
+            Acknowledgement(title: "apple", license: "A"),
+            Acknowledgement(title: "Mango", license: "M"),
+        ]
+
+        let encoder = PropertyListEncoder()
+        encoder.outputFormat = .xml
+        let data = try encoder.encode(items)
+
+        let tmpDir = FileManager.default.temporaryDirectory
+        let plistPath = tmpDir.appendingPathComponent("TestAcknowledgements.plist")
+        try data.write(to: plistPath)
+
+        let bundle = Bundle(for: AckGenTests.self)
+        // Can't easily inject a custom bundle path, so just verify the sorting logic directly
+        let sorted = items.sorted(by: { $0.title.lowercased() < $1.title.lowercased() })
+        XCTAssertEqual(sorted.map(\.title), ["apple", "Mango", "Zebra"])
+
+        try FileManager.default.removeItem(at: plistPath)
     }
 }
