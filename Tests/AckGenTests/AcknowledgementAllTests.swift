@@ -10,15 +10,10 @@ import XCTest
 
 final class AcknowledgementAllTests: XCTestCase {
 
-    /// Helper to load acknowledgements from the Fixtures subdirectory
-    private func loadAcknowledgementsFromFixture(plistName: String) -> [Acknowledgement] {
-        return Acknowledgement.all(fromPlist: "Fixtures/\(plistName)", in: Bundle.module)
-    }
-
     func testAllDecodesFixturePlist() {
         // Given: A fixture plist in the test bundle's Fixtures directory
         // When: Loading acknowledgements from the fixture
-        let acks = loadAcknowledgementsFromFixture(plistName: "Acknowledgements")
+        let acks = Acknowledgement.all(fromPlist: "Fixtures/Acknowledgements", in: Bundle.module)
 
         // Then: All entries should be decoded correctly
         XCTAssertEqual(acks.count, 3)
@@ -37,7 +32,7 @@ final class AcknowledgementAllTests: XCTestCase {
     func testAllSortsCaseInsensitively() {
         // Given: A fixture plist with mixed case titles (Zebra, apple, Banana)
         // When: Loading acknowledgements (which applies case-insensitive sorting)
-        let acks = loadAcknowledgementsFromFixture(plistName: "Acknowledgements")
+        let acks = Acknowledgement.all(fromPlist: "Fixtures/Acknowledgements", in: Bundle.module)
 
         // Then: Should be sorted case-insensitively: apple, Banana, Zebra
         XCTAssertEqual(acks.count, 3)
@@ -63,7 +58,7 @@ final class AcknowledgementAllTests: XCTestCase {
         // The all() method should return empty array for any decode failure
 
         // When: Attempting to decode a plist with invalid UTF-8 content
-        let acks = loadAcknowledgementsFromFixture(plistName: "invalid-utf8-license")
+        let acks = Acknowledgement.all(fromPlist: "Fixtures/invalid-utf8-license", in: Bundle.module)
 
         // Then: Should return empty array instead of crashing
         XCTAssertTrue(acks.isEmpty)
