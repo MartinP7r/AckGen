@@ -58,23 +58,12 @@ final class AcknowledgementAllTests: XCTestCase {
     }
 
     func testAllReturnsEmptyArrayForInvalidPlist() {
-        // Given: An invalid file (the invalid-utf8-license fixture)
+        // Given: An invalid plist file (the invalid-utf8-license fixture)
         // Note: This test verifies graceful handling of invalid data
         // The all() method should return empty array for any decode failure
-        let bundle = Bundle.module
 
-        // When: Loading from a plist that would fail to decode
-        // (Using Fixtures subdirectory path)
-        guard let path = bundle.path(forResource: "invalid-utf8-license", ofType: nil, inDirectory: "Fixtures") else {
-            XCTFail("Could not find invalid-utf8-license fixture")
-            return
-        }
-
-        // Verify the file exists and contains invalid data
-        XCTAssertNotNil(FileManager.default.contents(atPath: path))
-
-        // When: Attempting to decode as plist, it should fail gracefully
-        let acks = Acknowledgement.all(fromPlist: "NonExistent", in: bundle)
+        // When: Attempting to decode a plist with invalid UTF-8 content
+        let acks = loadAcknowledgementsFromFixture(plistName: "invalid-utf8-license")
 
         // Then: Should return empty array instead of crashing
         XCTAssertTrue(acks.isEmpty)
