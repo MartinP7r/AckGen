@@ -12,13 +12,7 @@ final class AcknowledgementAllTests: XCTestCase {
 
     /// Helper to load acknowledgements from the Fixtures subdirectory
     private func loadAcknowledgementsFromFixture(plistName: String) -> [Acknowledgement] {
-        let bundle = Bundle.module
-        guard let path = bundle.path(forResource: plistName, ofType: "plist", inDirectory: "Fixtures"),
-              let xml = FileManager.default.contents(atPath: path),
-              let acks = try? PropertyListDecoder().decode([Acknowledgement].self, from: xml) else {
-            return []
-        }
-        return acks.sorted(by: { $0.title.lowercased() < $1.title.lowercased() })
+        return Acknowledgement.all(fromPlist: "Fixtures/\(plistName)", in: Bundle.module)
     }
 
     func testAllDecodesFixturePlist() {
