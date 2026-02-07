@@ -16,7 +16,7 @@ swift build
 swift build -c release
 
 # Run the CLI (requires Xcode environment variables SRCROOT, PROJECT_TEMP_DIR)
-swift run ackgen [output_path] [forSettings] [settingsTitle]
+swift run ackgen --output <output_path> --settings <forSettings> --title <settingsTitle>
 
 # Run tests
 swift test
