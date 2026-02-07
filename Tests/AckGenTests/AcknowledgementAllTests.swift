@@ -53,11 +53,11 @@ final class AcknowledgementAllTests: XCTestCase {
     }
 
     func testAllReturnsEmptyArrayForInvalidPlist() {
-        // Given: An invalid plist file (the invalid-utf8-license fixture)
-        // Note: This test verifies graceful handling of invalid data
-        // The all() method should return empty array for any decode failure
+        // Given: A malformed/invalid plist file (fixture: invalid-utf8-license)
+        // Note: This test verifies graceful handling of decode failures for malformed plist data
+        // The all() method should return an empty array for any plist decode failure
 
-        // When: Attempting to decode a plist with invalid UTF-8 content
+        // When: Attempting to decode a malformed plist that cannot be parsed
         let acks = Acknowledgement.all(fromPlist: "Fixtures/invalid-utf8-license", in: Bundle.module)
 
         // Then: Should return empty array instead of crashing
