@@ -37,7 +37,7 @@ let package = Package(
         ),
         .testTarget(
             name: "AckGenTests",
-            dependencies: ["AckGenCore", "AckGenCLI"],
+            dependencies: ["AckGenCore"],
             resources: [.copy("Fixtures")]),
     ]
 )
