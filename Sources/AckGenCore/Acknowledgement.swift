@@ -42,6 +42,6 @@ public struct Acknowledgement: Codable {
 
 extension Acknowledgement: Comparable {
     public static func < (lhs: Acknowledgement, rhs: Acknowledgement) -> Bool {
-        lhs.title < rhs.title
+        lhs.title.lowercased() < rhs.title.lowercased()
     }
 }
