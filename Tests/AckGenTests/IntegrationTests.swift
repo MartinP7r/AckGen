@@ -20,6 +20,17 @@ final class IntegrationTests: XCTestCase {
         super.tearDown()
     }
     
+    /// Helper function to calculate base path from PROJECT_TEMP_DIR using the production logic
+    /// This matches the logic in Sources/AckGenCLI/AckGen.swift
+    private func calculateBasePath(from projectTempDir: String) -> String {
+        if let range = projectTempDir.range(of: "/Build/", options: .backwards) {
+            return String(projectTempDir[..<range.lowerBound])
+        } else {
+            // If no /Build/ found, return the path as-is (edge case)
+            return projectTempDir
+        }
+    }
+    
     /// Test that the path calculation logic correctly extracts the base path from PROJECT_TEMP_DIR
     func testPathCalculationFromProjectTempDir() {
         // Given: Various PROJECT_TEMP_DIR patterns used by Xcode
@@ -43,13 +54,7 @@ final class IntegrationTests: XCTestCase {
         
         // When & Then: Path calculation should correctly extract base directory
         for testCase in testCases {
-            // Use the improved path calculation that handles edge cases
-            let calculatedBase: String
-            if let range = testCase.input.range(of: "/Build/", options: .backwards) {
-                calculatedBase = String(testCase.input[..<range.lowerBound])
-            } else {
-                calculatedBase = testCase.input.components(separatedBy: "/Build/")[0]
-            }
+            let calculatedBase = calculateBasePath(from: testCase.input)
             let expectedPackagePath = calculatedBase + "/SourcePackages/checkouts"
             let expectedBasePath = testCase.expectedBase + "/SourcePackages/checkouts"
             
@@ -64,13 +69,8 @@ final class IntegrationTests: XCTestCase {
         let projectTempDir = "/Users/username/Library/Developer/Xcode/DerivedData/AppName-xyz/Build/Intermediates.noindex/AppName.build"
         
         // When: Calculate path using the improved CLI approach
-        let calculatedPath: String
-        if let range = projectTempDir.range(of: "/Build/", options: .backwards) {
-            let basePath = String(projectTempDir[..<range.lowerBound])
-            calculatedPath = basePath + "/SourcePackages/checkouts"
-        } else {
-            calculatedPath = projectTempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
-        }
+        let basePath = calculateBasePath(from: projectTempDir)
+        let calculatedPath = basePath + "/SourcePackages/checkouts"
         
         // Expected path from base directory
         let expectedPath = "/Users/username/Library/Developer/Xcode/DerivedData/AppName-xyz/SourcePackages/checkouts"
@@ -120,13 +120,8 @@ final class IntegrationTests: XCTestCase {
         
         // When: Calculate package cache path from PROJECT_TEMP_DIR using improved logic
         let projectTempDir = buildDir.path
-        let calculatedPackagePath: String
-        if let range = projectTempDir.range(of: "/Build/", options: .backwards) {
-            let basePath = String(projectTempDir[..<range.lowerBound])
-            calculatedPackagePath = basePath + "/SourcePackages/checkouts"
-        } else {
-            calculatedPackagePath = projectTempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
-        }
+        let basePath = calculateBasePath(from: projectTempDir)
+        let calculatedPackagePath = basePath + "/SourcePackages/checkouts"
         
         // Then: Should find the correct directory
         XCTAssertEqual(calculatedPackagePath, packagesDir.path)
@@ -143,13 +138,8 @@ final class IntegrationTests: XCTestCase {
         let projectTempDir = "/Users/Build/Projects/AppName-xyz/Build/Intermediates.noindex/AppName.build"
         
         // When: Calculate path using improved logic (should find last "/Build/")
-        let calculatedPath: String
-        if let range = projectTempDir.range(of: "/Build/", options: .backwards) {
-            let basePath = String(projectTempDir[..<range.lowerBound])
-            calculatedPath = basePath + "/SourcePackages/checkouts"
-        } else {
-            calculatedPath = projectTempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
-        }
+        let basePath = calculateBasePath(from: projectTempDir)
+        let calculatedPath = basePath + "/SourcePackages/checkouts"
         
         // Then: Should correctly identify the base path before the last Build/
         let expectedPath = "/Users/Build/Projects/AppName-xyz/SourcePackages/checkouts"
@@ -178,13 +168,8 @@ final class IntegrationTests: XCTestCase {
         
         for config in configurations {
             // When: Calculate package path using improved logic
-            let calculatedPath: String
-            if let range = config.tempDir.range(of: "/Build/", options: .backwards) {
-                let basePath = String(config.tempDir[..<range.lowerBound])
-                calculatedPath = basePath + "/SourcePackages/checkouts"
-            } else {
-                calculatedPath = config.tempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
-            }
+            let basePath = calculateBasePath(from: config.tempDir)
+            let calculatedPath = basePath + "/SourcePackages/checkouts"
             let expectedPath = config.expectedBase + "/SourcePackages/checkouts"
             
             // Then: Should correctly calculate path

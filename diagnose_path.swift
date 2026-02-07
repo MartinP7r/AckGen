@@ -122,7 +122,7 @@ struct PathDiagnostics {
             print("Use this in your Run Script:")
             print("┌─────────────────────────────────────────────────────────────")
             print("│ # Calculate the package path dynamically")
-            print("│ BASE_DIR=$(echo \"$PROJECT_TEMP_DIR\" | awk -F'/Build/' '{print $1}')")
+            print("│ BASE_DIR=\"${PROJECT_TEMP_DIR%/Build/*}\"")
             print("│ DIR=\"$BASE_DIR/SourcePackages/checkouts/AckGen\"")
             print("│ ")
             print("│ if [ -d \"$DIR\" ]; then")
