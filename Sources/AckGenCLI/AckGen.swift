@@ -54,6 +54,7 @@ struct AckGen: ParsableCommand {
                 }
                 let new = Acknowledgement(title: pkgDir, license: license)
                 acknowledgements.append(new)
+                break
             }
         }
 
