@@ -27,6 +27,31 @@ final class DuplicateLicenseFileTests: XCTestCase {
         try? FileManager.default.removeItem(at: tempDir)
     }
     
+    /// Scans the package cache path for license files, mimicking the CLI logic.
+    /// - Parameter shouldBreak: If true, breaks after finding the first license file per package (correct behavior).
+    ///                          If false, continues scanning all license files (buggy behavior).
+    /// - Returns: Array of acknowledgements found
+    private func scanForLicenses(shouldBreak: Bool) throws -> [Acknowledgement] {
+        let licenseFiles: [String] = ["LICENSE", "LICENSE.txt", "LICENSE.md"]
+        let fileManager = FileManager.default
+        let packageDirectories = try fileManager.contentsOfDirectory(atPath: packageCachePath.path)
+        var acknowledgements = [Acknowledgement]()
+        
+        for pkgDir in packageDirectories where pkgDir.prefix(1) != "." {
+            for file in licenseFiles {
+                guard let data = fileManager.contents(atPath: "\(packageCachePath.path)/\(pkgDir)/\(file)") else { continue }
+                guard let license = String(data: data, encoding: .utf8) else { continue }
+                let new = Acknowledgement(title: pkgDir, license: license)
+                acknowledgements.append(new)
+                if shouldBreak {
+                    break  // This break prevents duplicate entries
+                }
+            }
+        }
+        
+        return acknowledgements
+    }
+    
     func testPackageWithMultipleLicenseFilesGeneratesOnlyOneAcknowledgement() throws {
         // Given: A package directory with multiple license files (LICENSE, LICENSE.txt, LICENSE.md)
         let packageName = "TestPackage"
@@ -42,21 +67,8 @@ final class DuplicateLicenseFileTests: XCTestCase {
         try licenseContent2.write(to: packageDir.appendingPathComponent("LICENSE.txt"), atomically: true, encoding: .utf8)
         try licenseContent3.write(to: packageDir.appendingPathComponent("LICENSE.md"), atomically: true, encoding: .utf8)
         
-        // When: Scanning the package directory for license files (simulating CLI logic)
-        let licenseFiles: [String] = ["LICENSE", "LICENSE.txt", "LICENSE.md"]
-        let fman = FileManager.default
-        let packageDirectories = try fman.contentsOfDirectory(atPath: packageCachePath.path)
-        var acknowledgements = [Acknowledgement]()
-        
-        for pkgDir in packageDirectories where pkgDir.prefix(1) != "." {
-            for file in licenseFiles {
-                guard let data = fman.contents(atPath: "\(packageCachePath.path)/\(pkgDir)/\(file)") else { continue }
-                guard let license = String(data: data, encoding: .utf8) else { continue }
-                let new = Acknowledgement(title: pkgDir, license: license)
-                acknowledgements.append(new)
-                break  // This break prevents duplicate entries
-            }
-        }
+        // When: Scanning the package directory with break (correct behavior)
+        let acknowledgements = try scanForLicenses(shouldBreak: true)
         
         // Then: Only one acknowledgement should be created for the package
         XCTAssertEqual(acknowledgements.count, 1, "Should only create one acknowledgement per package, even with multiple license files")
@@ -85,21 +97,8 @@ final class DuplicateLicenseFileTests: XCTestCase {
         try "License txt for Package2".write(to: package2Dir.appendingPathComponent("LICENSE.txt"), atomically: true, encoding: .utf8)
         try "License md for Package2".write(to: package2Dir.appendingPathComponent("LICENSE.md"), atomically: true, encoding: .utf8)
         
-        // When: Scanning all package directories
-        let licenseFiles: [String] = ["LICENSE", "LICENSE.txt", "LICENSE.md"]
-        let fman = FileManager.default
-        let packageDirectories = try fman.contentsOfDirectory(atPath: packageCachePath.path)
-        var acknowledgements = [Acknowledgement]()
-        
-        for pkgDir in packageDirectories where pkgDir.prefix(1) != "." {
-            for file in licenseFiles {
-                guard let data = fman.contents(atPath: "\(packageCachePath.path)/\(pkgDir)/\(file)") else { continue }
-                guard let license = String(data: data, encoding: .utf8) else { continue }
-                let new = Acknowledgement(title: pkgDir, license: license)
-                acknowledgements.append(new)
-                break  // This break prevents duplicate entries
-            }
-        }
+        // When: Scanning all package directories with break (correct behavior)
+        let acknowledgements = try scanForLicenses(shouldBreak: true)
         
         // Then: Should have exactly 2 acknowledgements (one per package)
         XCTAssertEqual(acknowledgements.count, 2, "Should have one acknowledgement per package")
@@ -126,20 +125,7 @@ final class DuplicateLicenseFileTests: XCTestCase {
         try "License 2".write(to: packageDir.appendingPathComponent("LICENSE.txt"), atomically: true, encoding: .utf8)
         
         // When: Scanning WITHOUT break statement (old behavior)
-        let licenseFiles: [String] = ["LICENSE", "LICENSE.txt", "LICENSE.md"]
-        let fman = FileManager.default
-        let packageDirectories = try fman.contentsOfDirectory(atPath: packageCachePath.path)
-        var acknowledgements = [Acknowledgement]()
-        
-        for pkgDir in packageDirectories where pkgDir.prefix(1) != "." {
-            for file in licenseFiles {
-                guard let data = fman.contents(atPath: "\(packageCachePath.path)/\(pkgDir)/\(file)") else { continue }
-                guard let license = String(data: data, encoding: .utf8) else { continue }
-                let new = Acknowledgement(title: pkgDir, license: license)
-                acknowledgements.append(new)
-                // NOTE: No break here - simulating old behavior
-            }
-        }
+        let acknowledgements = try scanForLicenses(shouldBreak: false)
         
         // Then: WITHOUT break, we would get 2 entries for the same package (demonstrating the bug)
         XCTAssertEqual(acknowledgements.count, 2, "Without break, multiple entries are created for the same package")
