@@ -55,6 +55,57 @@ let acknowledgements: [Acknowledgement] = Acknowledgement.all()
 acknowledgements.forEach { print($0.title, $0.license) }
 ```
 
+## Settings.bundle Integration
+
+AckGen can generate acknowledgements in a format compatible with iOS Settings.bundle, allowing users to view package licenses directly in the iOS Settings app.
+
+### Setup
+
+1. Create a `Settings.bundle` in your Xcode project if you don't have one already (File → New → File → Settings Bundle).
+
+2. In your Settings.bundle's `Root.plist`, add a child pane specifier that points to the acknowledgements:
+
+```xml
+<dict>
+    <key>Type</key>
+    <string>PSChildPaneSpecifier</string>
+    <key>File</key>
+    <string>Acknowledgements</string>
+    <key>Title</key>
+    <string>Acknowledgements</string>
+</dict>
+```
+
+3. Add a Run Script build phase that generates the acknowledgements file in Settings.bundle format:
+
+```sh
+DIR=$PROJECT_TEMP_DIR/../../../SourcePackages/checkouts/AckGen
+if [ -d "$DIR" ]; then
+    cd $DIR
+    SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
+    SETTINGS_BUNDLE=$(find "$SRCROOT" -type d -name "Settings.bundle" -print -quit)
+    
+    if [ -d "$SETTINGS_BUNDLE" ]; then
+        PLIST_PATH="$SETTINGS_BUNDLE/Acknowledgements.plist"
+        PROJECT_NAME=$(basename "$SRCROOT")
+        swift run ackgen "$PLIST_PATH" 1 "$PROJECT_NAME"
+    else
+        echo "warning: Settings.bundle not found in the project."
+    fi
+else
+    echo "warning: AckGen not found. Please install the package via SPM (https://github.com/MartinP7r/AckGen#installation)"
+fi
+```
+
+The command takes three arguments:
+- **Path**: Where to save the plist file (e.g., `$SETTINGS_BUNDLE/Acknowledgements.plist`)
+- **Settings mode flag**: Pass `1` to generate Settings.bundle compatible format
+- **Title** (optional): The title for the acknowledgements section (defaults to "Acknowledgements")
+
+4. Make sure the generated `Acknowledgements.plist` is ignored in your `.gitignore` (e.g., `Settings.bundle/Acknowledgements.plist`) as it will be regenerated on each build.
+
+The acknowledgements will now appear in your app's Settings screen.
+
 ## UI
 
 Optionally, there's a basic SwiftUI `AcknowledgementsList` component (see gif above) included in the `AckGenUI` module that you can use to quickly create a generic list of acknowledgements to embed into a `NavigationView`.
