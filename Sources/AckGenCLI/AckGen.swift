@@ -32,7 +32,17 @@ struct AckGenCLI {
 
         let settingsTitle: String = arguments.count > 2 ? arguments[2] : "Acknowledgements"
 
-        let packageCachePath = tempDirPath.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+        // Calculate package cache path using improved logic
+        // Find the last occurrence of "/Build/" to handle edge cases like "Build" in username
+        let packageCachePath: String
+        if let range = tempDirPath.range(of: "/Build/", options: .backwards) {
+            let basePath = String(tempDirPath[..<range.lowerBound])
+            packageCachePath = basePath + "/SourcePackages/checkouts"
+        } else {
+            // Fallback to old logic if pattern not found
+            packageCachePath = tempDirPath.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+        }
+        
         let fman = FileManager.default
 
         do {

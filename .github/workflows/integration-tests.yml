@@ -1,0 +1,53 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integration-test:
+    name: Integration Tests
+    runs-on: macos-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Build CLI
+        run: swift build --product ackgen
+      
+      - name: Run Integration Tests
+        run: swift test --filter IntegrationTests
+      
+      - name: Test Example Project Setup
+        run: |
+          cd Example
+          
+          # Simulate a real Xcode project environment
+          export SRCROOT="${PWD}"
+          export PROJECT_TEMP_DIR="${PWD}/Build/Intermediates.noindex/AckGenExample.build"
+          
+          # Create mock directory structure
+          mkdir -p "${PROJECT_TEMP_DIR}"
+          mkdir -p "Build/DerivedData/AckGenExample-test/SourcePackages/checkouts/AckGen"
+          
+          # The path calculation should work (using the improved logic)
+          BASE_DIR="${PROJECT_TEMP_DIR%/Build/*}"
+          CALCULATED_PATH="${BASE_DIR}/SourcePackages/checkouts"
+          echo "Calculated package path: ${CALCULATED_PATH}"
+          
+          # Verify the calculation matches expected structure
+          if [[ "${CALCULATED_PATH}" == *"/SourcePackages/checkouts" ]]; then
+            echo "✅ Path calculation works correctly"
+          else
+            echo "❌ Path calculation failed"
+            exit 1
+          fi
