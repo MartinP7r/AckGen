@@ -54,7 +54,7 @@ BASE_DIR="${PROJECT_TEMP_DIR%/Build/*}"
 EXPECTED="/Users/Build/Projects/AppName-xyz"
 
 if [ "$BASE_DIR" = "$EXPECTED" ]; then
-    echo "✅ Edge case: PASSED (correctly uses first /Build/)"
+    echo "✅ Edge case: PASSED (correctly uses last /Build/)"
     echo "   Input: $PROJECT_TEMP_DIR"
     echo "   Output: $BASE_DIR"
     passed=$((passed + 1))

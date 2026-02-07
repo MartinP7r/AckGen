@@ -33,8 +33,9 @@ struct PathDiagnostics {
         if let range = projectTempDir.range(of: "/Build/", options: .backwards) {
             calculatedBase = String(projectTempDir[..<range.lowerBound])
         } else {
-            // Fallback to old logic if pattern not found
-            calculatedBase = projectTempDir.components(separatedBy: "/Build/")[0]
+            // Fallback if pattern not found (unusual case)
+            print("⚠️  Warning: '/Build/' not found in PROJECT_TEMP_DIR - using fallback")
+            calculatedBase = projectTempDir
         }
         let calculatedPackagePath = "\(calculatedBase)/SourcePackages/checkouts"
         

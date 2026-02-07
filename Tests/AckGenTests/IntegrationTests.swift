@@ -43,7 +43,13 @@ final class IntegrationTests: XCTestCase {
         
         // When & Then: Path calculation should correctly extract base directory
         for testCase in testCases {
-            let calculatedBase = testCase.input.components(separatedBy: "/Build/")[0]
+            // Use the improved path calculation that handles edge cases
+            let calculatedBase: String
+            if let range = testCase.input.range(of: "/Build/", options: .backwards) {
+                calculatedBase = String(testCase.input[..<range.lowerBound])
+            } else {
+                calculatedBase = testCase.input.components(separatedBy: "/Build/")[0]
+            }
             let expectedPackagePath = calculatedBase + "/SourcePackages/checkouts"
             let expectedBasePath = testCase.expectedBase + "/SourcePackages/checkouts"
             
@@ -57,8 +63,14 @@ final class IntegrationTests: XCTestCase {
         // Given: A simulated PROJECT_TEMP_DIR from Xcode
         let projectTempDir = "/Users/username/Library/Developer/Xcode/DerivedData/AppName-xyz/Build/Intermediates.noindex/AppName.build"
         
-        // When: Calculate path using the CLI approach
-        let calculatedPath = projectTempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+        // When: Calculate path using the improved CLI approach
+        let calculatedPath: String
+        if let range = projectTempDir.range(of: "/Build/", options: .backwards) {
+            let basePath = String(projectTempDir[..<range.lowerBound])
+            calculatedPath = basePath + "/SourcePackages/checkouts"
+        } else {
+            calculatedPath = projectTempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+        }
         
         // Expected path from base directory
         let expectedPath = "/Users/username/Library/Developer/Xcode/DerivedData/AppName-xyz/SourcePackages/checkouts"
@@ -106,9 +118,15 @@ final class IntegrationTests: XCTestCase {
         try license1.write(to: package1.appendingPathComponent("LICENSE"), atomically: true, encoding: .utf8)
         try license2.write(to: package2.appendingPathComponent("LICENSE.txt"), atomically: true, encoding: .utf8)
         
-        // When: Calculate package cache path from PROJECT_TEMP_DIR
+        // When: Calculate package cache path from PROJECT_TEMP_DIR using improved logic
         let projectTempDir = buildDir.path
-        let calculatedPackagePath = projectTempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+        let calculatedPackagePath: String
+        if let range = projectTempDir.range(of: "/Build/", options: .backwards) {
+            let basePath = String(projectTempDir[..<range.lowerBound])
+            calculatedPackagePath = basePath + "/SourcePackages/checkouts"
+        } else {
+            calculatedPackagePath = projectTempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+        }
         
         // Then: Should find the correct directory
         XCTAssertEqual(calculatedPackagePath, packagesDir.path)
@@ -124,10 +142,16 @@ final class IntegrationTests: XCTestCase {
         // Given: A PROJECT_TEMP_DIR that contains "Build" multiple times
         let projectTempDir = "/Users/Build/Projects/AppName-xyz/Build/Intermediates.noindex/AppName.build"
         
-        // When: Calculate path (should split on first "/Build/")
-        let calculatedPath = projectTempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+        // When: Calculate path using improved logic (should find last "/Build/")
+        let calculatedPath: String
+        if let range = projectTempDir.range(of: "/Build/", options: .backwards) {
+            let basePath = String(projectTempDir[..<range.lowerBound])
+            calculatedPath = basePath + "/SourcePackages/checkouts"
+        } else {
+            calculatedPath = projectTempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+        }
         
-        // Then: Should correctly identify the base path before the first Build
+        // Then: Should correctly identify the base path before the last Build/
         let expectedPath = "/Users/Build/Projects/AppName-xyz/SourcePackages/checkouts"
         XCTAssertEqual(calculatedPath, expectedPath)
     }
@@ -153,8 +177,14 @@ final class IntegrationTests: XCTestCase {
         ]
         
         for config in configurations {
-            // When: Calculate package path
-            let calculatedPath = config.tempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+            // When: Calculate package path using improved logic
+            let calculatedPath: String
+            if let range = config.tempDir.range(of: "/Build/", options: .backwards) {
+                let basePath = String(config.tempDir[..<range.lowerBound])
+                calculatedPath = basePath + "/SourcePackages/checkouts"
+            } else {
+                calculatedPath = config.tempDir.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+            }
             let expectedPath = config.expectedBase + "/SourcePackages/checkouts"
             
             // Then: Should correctly calculate path

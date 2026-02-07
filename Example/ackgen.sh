@@ -1,6 +1,6 @@
 # For the Example app, AckGen is used as a local package, so we use a simple relative path
 # In your own project with SPM, use the dynamic path calculation from the README:
-# BASE_DIR=$(echo "$PROJECT_TEMP_DIR" | awk -F'/Build/' '{print $1}')
+# BASE_DIR="${PROJECT_TEMP_DIR%/Build/*}"
 # DIR="$BASE_DIR/SourcePackages/checkouts/AckGen"
 DIR=..
 
