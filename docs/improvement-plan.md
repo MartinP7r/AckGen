@@ -80,6 +80,7 @@ final class AcknowledgementTests: XCTestCase {
             Acknowledgement(title: "Banana", license: "")
         ]
         let sorted = acks.sorted()
+        // Case-insensitive sorting: apple, Banana, Zebra
         XCTAssertEqual(sorted.map(\.title), ["apple", "Banana", "Zebra"])
     }
 
