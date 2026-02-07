@@ -23,8 +23,8 @@ echo "  PROJECT_TEMP_DIR: $PROJECT_TEMP_DIR"
 echo "  SRCROOT: ${SRCROOT:-not set}"
 echo ""
 
-# Calculate package path using the same logic as AckGen CLI
-CALCULATED_BASE=$(echo "$PROJECT_TEMP_DIR" | awk -F'/Build/' '{print $1}')
+# Calculate package path using the improved logic (handles edge cases like "Build" in username)
+CALCULATED_BASE="${PROJECT_TEMP_DIR%/Build/*}"
 CALCULATED_PACKAGE_PATH="${CALCULATED_BASE}/SourcePackages/checkouts"
 
 echo "🧮 Path Calculation:"

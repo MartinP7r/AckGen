@@ -26,7 +26,8 @@ This can be used to feed a SwiftUI List or UITableView dataSource in your app.
 
 ```sh
 # Calculate the package path dynamically (works with various Xcode configurations)
-BASE_DIR=$(echo "$PROJECT_TEMP_DIR" | awk -F'/Build/' '{print $1}')
+# Use parameter expansion to remove everything from /Build/ onwards
+BASE_DIR="${PROJECT_TEMP_DIR%/Build/*}"
 DIR="$BASE_DIR/SourcePackages/checkouts/AckGen"
 
 if [ -d "$DIR" ]; then
@@ -88,7 +89,9 @@ Until 1.0 is reached, minor versions will be breaking.
 
 If you see the warning `AckGen not found. Please install the package via SPM`, try the following:
 
-1. **Run the diagnostic script**: Execute `./diagnose_path.sh` from this repository (set `PROJECT_TEMP_DIR` to your Xcode build directory path)
+1. **Run the diagnostic script**: 
+   - Swift version: `swift diagnose_path.swift` (set `PROJECT_TEMP_DIR` environment variable first)
+   - Shell version: `./diagnose_path.sh` (set `PROJECT_TEMP_DIR` environment variable first)
 2. **Verify SPM installation**: Make sure AckGen is added as a Swift Package dependency in your Xcode project
 3. **Build your project**: SPM dependencies are only downloaded after you build your project at least once
 4. **Check your path**: The script in the README dynamically calculates the package path. If your project uses a non-standard structure, you may need to adjust the path calculation
@@ -98,15 +101,18 @@ If you see the warning `AckGen not found. Please install the package via SPM`, t
 Xcode places SPM packages in different locations depending on your project setup. The recommended script uses:
 
 ```sh
-BASE_DIR=$(echo "$PROJECT_TEMP_DIR" | awk -F'/Build/' '{print $1}')
+BASE_DIR="${PROJECT_TEMP_DIR%/Build/*}"
 DIR="$BASE_DIR/SourcePackages/checkouts/AckGen"
 ```
 
-This extracts the base directory before `/Build/` and appends the standard SPM checkout path. This approach works across:
-- Different Xcode versions
-- Debug/Release configurations  
-- iOS/macOS/watchOS/tvOS targets
-- Simulator/Device builds
+This uses bash parameter expansion to remove everything from `/Build/` onwards (including `/Build/` itself) and appends the standard SPM checkout path. This approach:
+- Works across different Xcode versions
+- Handles Debug/Release configurations  
+- Supports iOS/macOS/watchOS/tvOS targets
+- Works with Simulator/Device builds
+- Handles edge cases like usernames or project names containing "Build"
+
+The calculation finds the **last** occurrence of `/Build/` in the path, ensuring correct behavior even when "Build" appears elsewhere in the path (e.g., `/Users/Build/Projects/MyApp/Build/Intermediates`).
 
 If you need a different path for your setup (e.g., local package development), you can modify the `DIR` variable accordingly. See `Example/ackgen.sh` for an example of using a local package.
 
