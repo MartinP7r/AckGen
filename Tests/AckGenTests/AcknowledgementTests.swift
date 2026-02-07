@@ -49,11 +49,18 @@ final class AcknowledgementTests: XCTestCase {
         let encoder = PropertyListEncoder()
         encoder.outputFormat = .xml
 
-        XCTAssertNoThrow(try encoder.encode(ack))
+        var data: Data?
+        XCTAssertNoThrow(data = try encoder.encode(ack))
 
-        let data = try! encoder.encode(ack)
-        let plistString = String(data: data, encoding: .utf8)!
+        guard let encodedData = data else {
+            XCTFail("Failed to encode Acknowledgement to Property List data.")
+            return
+        }
 
+        guard let plistString = String(data: encodedData, encoding: .utf8) else {
+            XCTFail("Failed to convert Property List data to UTF-8 String.")
+            return
+        }
         // Verify the coding keys are correct (Title, FooterText, Type)
         XCTAssertTrue(plistString.contains("<key>Title</key>"))
         XCTAssertTrue(plistString.contains("<key>FooterText</key>"))
