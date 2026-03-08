@@ -16,7 +16,7 @@ swift build
 swift build -c release
 
 # Run the CLI (requires Xcode environment variables SRCROOT, PROJECT_TEMP_DIR)
-swift run ackgen --output <output_path> --settings <forSettings> --title <settingsTitle>
+swift run ackgen --output <output_path> --settings --title <settingsTitle>
 
 # Run tests
 swift test
@@ -30,7 +30,7 @@ make open
 
 ## Architecture
 
-Three-module Swift Package with no external dependencies:
+Three-module Swift Package with one external dependency (`swift-argument-parser` for the CLI):
 
 ```
 AckGenCore (library)
