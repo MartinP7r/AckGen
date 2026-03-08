@@ -96,7 +96,7 @@ if [ -d "$DIR" ]; then
     if [ -d "$SETTINGS_BUNDLE" ]; then
         PLIST_PATH="$SETTINGS_BUNDLE/Acknowledgements.plist"
         PROJECT_NAME=$(basename "$SRCROOT")
-        swift run ackgen "$PLIST_PATH" 1 "$PROJECT_NAME"
+        swift run ackgen --output "$PLIST_PATH" --settings --title "$PROJECT_NAME"
     else
         echo "warning: Settings.bundle not found in the project."
     fi
@@ -105,10 +105,10 @@ else
 fi
 ```
 
-The command takes three arguments:
-- **Path**: Where to save the plist file (e.g., `$SETTINGS_BUNDLE/Acknowledgements.plist`)
-- **Settings mode flag**: Pass `1` to generate Settings.bundle compatible format
-- **Title** (optional): The title for the acknowledgements section (defaults to "Acknowledgements")
+The command options:
+- **`--output`**: Where to save the plist file (e.g., `$SETTINGS_BUNDLE/Acknowledgements.plist`)
+- **`--settings`**: Generate Settings.bundle compatible format
+- **`--title`** (optional): The title for the acknowledgements section (defaults to "Acknowledgements")
 
 4. Make sure the generated `Acknowledgements.plist` is ignored in your `.gitignore` (e.g., `Settings.bundle/Acknowledgements.plist`) as it will be regenerated on each build.
 
