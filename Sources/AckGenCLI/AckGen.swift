@@ -39,7 +39,13 @@ struct AckGen: ParsableCommand {
 
         let plistPath: String = output ?? "\(srcRoot)/Acknowledgements.plist"
 
-        let packageCachePath = tempDirPath.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+        // Find the last occurrence of "/Build/" to handle edge cases like "Build" in username
+        let packageCachePath: String
+        if let range = tempDirPath.range(of: "/Build/", options: .backwards) {
+            packageCachePath = String(tempDirPath[..<range.lowerBound]) + "/SourcePackages/checkouts"
+        } else {
+            packageCachePath = tempDirPath.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+        }
         let fman = FileManager.default
 
         let packageDirectories = try fman.contentsOfDirectory(atPath: packageCachePath)

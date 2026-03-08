@@ -25,10 +25,13 @@ This can be used to feed a SwiftUI List or UITableView dataSource in your app.
 2. Add the following as a Run Script for your target in Xcode
 
 ```sh
-DIR=$PROJECT_TEMP_DIR/../../../SourcePackages/checkouts/AckGen
+# Calculate the package path dynamically (handles "Build" in usernames/project paths)
+BASE_DIR="${PROJECT_TEMP_DIR%/Build/*}"
+DIR="$BASE_DIR/SourcePackages/checkouts/AckGen"
+
 if [ -d "$DIR" ]; then
-  cd $DIR
-  SDKROOT=(xcrun --sdk macosx --show-sdk-path)
+  cd "$DIR"
+  SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
   swift run ackgen
 else
   echo "warning: AckGen not found. Please install the package via SPM (https://github.com/MartinP7r/AckGen#installation)"
