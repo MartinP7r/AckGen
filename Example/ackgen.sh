@@ -4,7 +4,7 @@ DIR=..
 if [ -d "$DIR" ]; then
     cd $DIR
     SDKROOT=(xcrun --sdk macosx --show-sdk-path)
-    swift run ackgen $SRCROOT/PackageLicenses.plist
+    swift run ackgen --output "$SRCROOT/PackageLicenses.plist"
 else
     echo "warning: AckGen not found. Please install the package via SPM (https://github.com/MartinP7r/AckGen#installation)"
 fi

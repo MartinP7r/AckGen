@@ -37,11 +37,19 @@ fi
 
 Make sure to set `ENABLE_USER_SCRIPT_SANDBOXING` to `NO` in your build settings so the build phase above can write to the desired destination.
 
-If you want the plist file to be saved somewhere other than `Acknowledgements.plist` at the root of your project (`$SRCROOT/Acknowledgements.plist`), you can provide a custom path as the first command line argument to `ackgen` above. 
+If you want the plist file to be saved somewhere other than `Acknowledgements.plist` at the root of your project (`$SRCROOT/Acknowledgements.plist`), you can provide a custom output path:
 
 ```sh
-  swift run ackgen $SRCROOT/PackageLicenses.plist
+  swift run ackgen --output "$SRCROOT/PackageLicenses.plist"
 ```
+
+To generate a Settings.bundle-compatible plist instead, use the `--settings` flag:
+
+```sh
+  swift run ackgen --output "$PLIST_PATH" --settings --title "MyApp"
+```
+
+Run `swift run ackgen --help` for all available options.
 
 3. Add the generated `plist` file to your project if you haven't already.  
 Make sure to remove the check for **Copy items if needed** 
@@ -96,5 +104,5 @@ make open
 - [x] Add UI components (SwiftUI List with NavigationLink to license info?)
 - [ ] Allow Run Script Output Files as alternative to command line argument
 - [ ] Allow to specify excluded packages
-- [ ] Add tests
+- [x] Add tests
 - [ ] Add other platforms
