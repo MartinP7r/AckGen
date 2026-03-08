@@ -64,7 +64,7 @@ final class AckGenTests: XCTestCase {
 
         let bundle = Bundle(for: AckGenTests.self)
         // Can't easily inject a custom bundle path, so just verify the sorting logic directly
-        let sorted = items.sorted(by: { $0.title.lowercased() < $1.title.lowercased() })
+        let sorted = items.sorted()
         XCTAssertEqual(sorted.map(\.title), ["apple", "Mango", "Zebra"])
 
         try FileManager.default.removeItem(at: plistPath)

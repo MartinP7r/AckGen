@@ -27,9 +27,7 @@ final class AcknowledgementTests: XCTestCase {
         XCTAssertFalse(ackB < ackA)
     }
 
-    func testSortingIsCaseSensitive() {
-        // Note: Comparable implementation uses case-sensitive sorting
-        // This differs from Acknowledgement.all() which uses case-insensitive
+    func testSortingIsCaseInsensitive() {
         let acks = [
             Acknowledgement(title: "Zebra", license: "License 1"),
             Acknowledgement(title: "apple", license: "License 2"),
@@ -38,10 +36,10 @@ final class AcknowledgementTests: XCTestCase {
 
         let sorted = acks.sorted()
 
-        // Case-sensitive: uppercase comes before lowercase in ASCII
-        XCTAssertEqual(sorted[0].title, "Banana")
-        XCTAssertEqual(sorted[1].title, "Zebra")
-        XCTAssertEqual(sorted[2].title, "apple")
+        // Case-insensitive: alphabetical order regardless of case
+        XCTAssertEqual(sorted[0].title, "apple")
+        XCTAssertEqual(sorted[1].title, "Banana")
+        XCTAssertEqual(sorted[2].title, "Zebra")
     }
 
     func testCodingKeys() {

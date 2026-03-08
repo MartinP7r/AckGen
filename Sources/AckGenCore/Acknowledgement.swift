@@ -36,12 +36,12 @@ public struct Acknowledgement: Codable {
         guard let path = bundle.path(forResource: plistName, ofType: "plist"),
               let xml = FileManager.default.contents(atPath: path),
               let acks = try? PropertyListDecoder().decode([Acknowledgement].self, from: xml) else { return [] }
-        return acks.sorted(by: { $0.title.lowercased() < $1.title.lowercased() })
+        return acks.sorted()
     }
 }
 
 extension Acknowledgement: Comparable {
     public static func < (lhs: Acknowledgement, rhs: Acknowledgement) -> Bool {
-        lhs.title < rhs.title
+        lhs.title.localizedStandardCompare(rhs.title) == .orderedAscending
     }
 }
