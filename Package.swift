@@ -24,7 +24,9 @@ let package = Package(
             dependencies: [
                 "AckGenCore",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
-            ]),
+            ],
+            swiftSettings: [.define("DEV", .when(configuration: .debug))]
+        ),
         .target(
             name: "AckGenUI",
             dependencies: ["AckGenCore"],
@@ -37,7 +39,7 @@ let package = Package(
         ),
         .testTarget(
             name: "AckGenTests",
-            dependencies: ["AckGenCore"],
+            dependencies: ["AckGenCore", "AckGenCLI"],
             resources: [.copy("Fixtures")]),
     ]
 )
