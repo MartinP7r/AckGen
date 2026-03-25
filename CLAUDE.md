@@ -40,9 +40,9 @@ AckGenCore (library)
 ├── Acknowledgement.swift    # Model + plist decoding for runtime use
 
 AckGenCLI (executable: ackgen)
-├── AckGen.swift             # Main entry point (@main ParsableCommand)
+├── AckGen.swift             # Main entry point (@main ParsableCommand) + LicenseScanner
 ├── AcknowledgementsStringsTable.swift  # Settings.bundle plist format
-├── EnvironmentKey.swift     # Xcode environment variable name constants
+├── EnvironmentKey.swift     # Xcode environment variable name constants (currently unused)
 
 AckGenUI (library)
 ├── AcknowledgementsList.swift   # SwiftUI list view for displaying licenses
@@ -52,9 +52,12 @@ AckGenUI (library)
 **Data Flow:**
 1. CLI runs as Xcode build phase, reads `PROJECT_TEMP_DIR` to find SPM checkouts
 2. Finds the `SourcePackages/checkouts` directory by locating the last `/Build/` segment in the temp path (handles edge cases like "Build" in directory names)
-3. Scans for LICENSE, LICENSE.txt, LICENSE.md in each package directory (first match wins, prevents duplicates)
+3. `LicenseScanner.scan()` finds LICENSE, LICENSE.txt, LICENSE.md per package (first match wins, prevents duplicates); tracks skipped files with reasons
 4. Encodes to plist (standard array or Settings.bundle format)
 5. App uses `Acknowledgement.all()` to decode plist at runtime
+
+**Build Configuration:**
+- `DEV` compiler flag is set in debug builds via `swiftSettings` — enables verbose skipped-file diagnostics
 
 **Two Output Formats:**
 - Standard: Array of `Acknowledgement` (default)
@@ -68,6 +71,7 @@ Tests are in `Tests/AckGenTests/` with fixtures in `Tests/AckGenTests/Fixtures/`
 - `AckGenTests.swift` — CLI integration tests (Settings.bundle format)
 - `AcknowledgementAllTests.swift` — `Acknowledgement.all()` runtime loading
 - `DuplicateLicenseFileTests.swift` — Ensures only one license per package
+- `LicenseScannerTests.swift` — File discovery, LICENSE variants, hidden dirs, duplicate prevention, invalid UTF-8 tracking
 
 Fixtures: `Acknowledgements.plist`, `invalid-utf8-license.plist`
 
