@@ -9,6 +9,20 @@ import AckGenCore
 import ArgumentParser
 import Foundation
 
+/// Derives the SPM `SourcePackages/checkouts` path from Xcode's `PROJECT_TEMP_DIR`.
+///
+/// Uses the last occurrence of `/Build/` to handle edge cases where "Build"
+/// appears earlier in the path (e.g., in a username or directory name).
+/// - Parameter tempDirPath: The value of the `PROJECT_TEMP_DIR` environment variable.
+/// - Returns: The path to the `SourcePackages/checkouts` directory.
+func deriveCheckoutsPath(from tempDirPath: String) -> String {
+    if let range = tempDirPath.range(of: "/Build/", options: .backwards) {
+        return String(tempDirPath[..<range.lowerBound]) + "/SourcePackages/checkouts"
+    } else {
+        return tempDirPath.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
+    }
+}
+
 struct LicenseScanner {
     struct ScanResult {
         var acknowledgements: [Acknowledgement]
@@ -64,13 +78,7 @@ struct AckGen: ParsableCommand {
         }
 
         let plistPath: String = output ?? "\(srcRoot)/Acknowledgements.plist"
-        // Use last occurrence of "/Build/" to handle edge cases like "Build" in username
-        let packageCachePath: String
-        if let range = tempDirPath.range(of: "/Build/", options: .backwards) {
-            packageCachePath = String(tempDirPath[..<range.lowerBound]) + "/SourcePackages/checkouts"
-        } else {
-            packageCachePath = tempDirPath.components(separatedBy: "/Build/")[0] + "/SourcePackages/checkouts"
-        }
+        let packageCachePath = deriveCheckoutsPath(from: tempDirPath)
 
         let result = try LicenseScanner.scan(checkoutsPath: packageCachePath)
 
